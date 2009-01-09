@@ -805,6 +805,14 @@ id C<under10> remains. For age less than 18, the node with id C<under18>
 remains.
 Otherwise our "else" condition fires and the child with id C<welcome> remains.
 
+=head3 $tree->passover($id_of_element)
+
+In some cases, you know exactly which element should survive. In this case,
+you can simply call C<passover> to remove it's siblings. For the HTML
+above, you could delete C<under10> and C<welcome> by simply calling:
+
+  $tree->passover('under18');
+
 =head3 $tree->highlander2($tree, $conditionals, @conditionals_args)
 
 Right around the same time that C<table2()> came into being, Seamstress
