@@ -1,0 +1,23 @@
+# I am trying to run this code:
+
+$t1 = HTML::TreeBuilder->new_from_content ( $html ) ;
+
+my $found= $t1->look_down(id => 'findme');
+
+warn "blessed as: $found";
+bless $found, 'HTML::Element::Library';
+warn "blessed as: $found";
+
+my @found = $found->position;
+warn "@found";
+
+# But I get this error (it is part of a test suite):
+
+blessed as: HTML::Element=HASH(0x81632d8) at t/position.t line 31.
+blessed as: HTML::Element::Library=HASH(0x81632d8) at t/position.t line 33.
+Can't locate object method "addr" via package "HTML::Element" at /home/terry/perl/hax/HTML-Element-Library/blib/lib/HTML/Element/Library.pm line 66.
+
+# What I don't understand is why it says it can't locate the method "addr"
+# in package HTML::Element when the method was reblessed as
+# HTML::Element::Library and sub addr is right here in the package
+# HTML::Element::Library

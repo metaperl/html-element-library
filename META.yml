@@ -1,0 +1,18 @@
+# http://module-build.sourceforge.net/META-spec.html
+#XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
+name:         HTML-Element-Library
+version:      3.51
+version_from: lib/HTML/Element/Library.pm
+installdirs:  site
+requires:
+    Array::Group:                  1
+    File::Slurp:                   9999.06
+    HTML::PrettyPrinter:           0.03
+    HTML::Tree:                    3.19
+    List::MoreUtils:               0.09
+    List::Rotation::Cycle:         1.003
+    Params::Validate:              0.8
+    Scalar::Listify:               0.02
+
+distribution_type: module
+generated_by: ExtUtils::MakeMaker version 6.17

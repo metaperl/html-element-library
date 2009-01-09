@@ -1,0 +1,6 @@
+<html>
+  <head></head>
+  <body><span id="age_dialog" klass="highlander"><span id="welcome"> Welcome,
+        isn't it good to be <span id="age">27</span> years old?
+      </span></span></body>
+</html>

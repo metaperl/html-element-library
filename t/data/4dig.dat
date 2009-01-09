@@ -1,0 +1,10 @@
+1200,Unicode (BMP of ISO 10646),0,0,1,1,2
+1250,Windows 3.1 Eastern European,1,0,1,1,1
+1251,Windows 3.1 Cyrillic,1,0,1,1,1
+1252,Windows 3.1 US (ANSI),1,0,1,1,1
+1253,Windows 3.1 Greek,1,0,1,1,1
+1254,Windows 3.1 Turkish,1,0,1,1,1
+1255,Hebrew,1,0,0,0,1
+1256,Arabic,1,0,0,0,1
+1257,Baltic,1,0,0,0,1
+1361,Korean (Johab),1,0,0,3,1
