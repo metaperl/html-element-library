@@ -24,7 +24,7 @@ our @EXPORT      = qw();
 
 
 
-our $VERSION = '3.51';
+our $VERSION = '3.53';
 
 
 # Preloaded methods go here.
@@ -34,6 +34,33 @@ sub HTML::Element::siblings {
   my $p = $element->parent;
   return () unless $p;
   $p->content_list;
+}
+
+sub HTML::Element::passover {
+  my ($tree, $child_id) = @_;
+  
+  #warn "ARGS:   my ($tree, $child)";
+
+  my $exodus = $tree->look_down(id => $child_id);
+
+  my @s = HTML::Element::siblings($exodus);
+
+  warn "sibling count", scalar @s;
+  warn "siblings", join ':', @s;
+
+  for my $s (@s) {
+    warn "SIBLING: $s";
+    warn "ref sib", ref $s;
+    next unless ref $s;
+    if ($s->attr('id') eq $child_id) {
+      ;
+    } else {
+      $s->delete;
+    }
+  }
+
+  return $exodus; # Goodbye Egypt! http://en.wikipedia.org/wiki/Passover
+
 }
 
 sub HTML::Element::sibdex {
