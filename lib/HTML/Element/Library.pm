@@ -45,12 +45,7 @@ sub HTML::Element::passover {
 
   my @s = HTML::Element::siblings($exodus);
 
-  warn "sibling count", scalar @s;
-  warn "siblings", join ':', @s;
-
   for my $s (@s) {
-    warn "SIBLING: $s";
-    warn "ref sib", ref $s;
     next unless ref $s;
     if ($s->attr('id') eq $child_id) {
       ;
@@ -557,9 +552,9 @@ sub HTML::Element::table2 {
   #  ++$DEBUG if $table{debug} ;
 
   # Get the table element
-  warn 1;
+  #warn 1;
   $table->{table_node} = ref_or_ld( $tree, $p{table_ld} ) ;
-  warn 2;
+  #warn 2;
   $table->{table_node} or confess
     "table tag not found via " . Dumper($p{table_ld}) ;
 
@@ -598,12 +593,12 @@ sub HTML::Element::table2 {
 	if defined $p{tr_proc};
 
     warn  "data row redux: " . Dumper $row if $p{debug};
-    warn 3.3;
+    #warn 3.3;
 
     $p{td_proc}->($new_tr_node, $row);
     push @table_rows, $new_tr_node;
 
-    warn 4.4;
+    #warn 4.4;
 
     redo;
   }
