@@ -39,7 +39,7 @@ sub HTML::Element::siblings {
 sub HTML::Element::passover {
   my ($tree, $child_id) = @_;
   
-  #warn "ARGS:   my ($tree, $child)";
+  warn "ARGS:   my ($tree, $child_id)";
 
   my $exodus = $tree->look_down(id => $child_id);
 
@@ -111,9 +111,12 @@ sub HTML::Element::position {
 
 
 sub HTML::Element::content_handler {
-  my ($tree, $id_name, $content) = @_;
+  my ($tree, %content_hash) = @_;
 
-  $tree->set_child_content(id => $id_name, $content);
+  for my $k (keys %content_hash) {
+      $tree->set_child_content(id => $k, $content_hash{$k});      
+  }
+
 
 }
 
@@ -737,7 +740,7 @@ happens to be a non-element, a push_content is performed instead.
 
 After finding the node, it detaches the node's content and pushes $content as the node's content.
 
-=head3 $tree->content_handler($sid_value , $content)
+=head3 $tree->content_handler(%id_content)
 
 This is a convenience method. Because the look_down criteria will often simply be:
 
@@ -754,6 +757,15 @@ You can call this method to shorten your typing a bit. You can simply type
 Instead of typing:
 
   $elem->set_child_content(sid => 'fixme', 'new text') 
+
+PLEASE NOTE: you can pass a hash whose keys are C<id>s and whose values are the content you want there and it will perform the replacement on each hash member:
+
+  my %id_content = (name => "Terrence Brannon",      
+                    email => 'tbrannon@in.com',
+                    balance => 666,                         
+                    content => $main_content);             
+
+  $tree->content_handler(%id_content);  
 
 =head3 $tree->highlander($subtree_span_id, $conditionals, @conditionals_args)
 
