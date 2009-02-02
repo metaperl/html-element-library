@@ -12,6 +12,7 @@ use Array::Group qw(:all);
 use Carp qw(confess);
 use Data::Dumper;
 use HTML::Element;
+use List::Util qw(first);
 use List::MoreUtils qw/:all/;
 use Params::Validate qw(:all);
 use Scalar::Listify;
@@ -36,12 +37,37 @@ sub HTML::Element::siblings {
   $p->content_list;
 }
 
+sub HTML::Element::data_map {
+
+    my ($container, @rest) = @_;
+
+
+  my %p = validate(@rest, {
+    href      => 1,
+    with_attr => 1,
+    excluding => { type => ARRAYREF, default => [] }
+   }
+		  );
+
+  my @same_as = $container->look_down('_attr' => $p{with_attr});
+
+  for my $same_as (@same_as) {
+      next if first { $same_as eq $_ } @{$p{excluding}}  ;
+      $same_as->replace_content( $p{href}->{ $same_as->attr( $p{with_attr} ) } ) ;
+  }
+
+}
+
+
 sub HTML::Element::passover {
   my ($tree, $child_id) = @_;
   
-  warn "ARGS:   my ($tree, $child_id)";
+  warn "ARGS:   my ($tree, $child_id)" if $DEBUG;
+  warn $tree->as_HTML(undef, ' ') if $DEBUG;
 
   my $exodus = $tree->look_down(id => $child_id);
+
+  warn "E: $exodus" if $DEBUG;
 
   my @s = HTML::Element::siblings($exodus);
 
@@ -188,6 +214,7 @@ sub HTML::Element::iter2 {
   warn "wrapper_data: " . Dumper $p{wrapper_data} if $p{debug} ;
 
   my $container = ref_or_ld($tree, $p{wrapper_ld});
+  warn "container: " . $container if $p{debug} ;
   warn "wrapper_(preproc): " . $container->as_HTML if $p{debug} ;
   $p{wrapper_proc}->($container) if defined $p{wrapper_proc} ;
   warn "wrapper_(postproc): " . $container->as_HTML if $p{debug} ;
