@@ -22,11 +22,11 @@ sub tage {
 
   my $tree = HTML::TreeBuilder->new_from_file("$root.initial");
 
-  warn "TREE: $tree" . $tree->as_HTML;
+  #warn "TREE: $tree" . $tree->as_HTML;
 
   my %data = (people_id => 888, phone => '444-4444', email => 'dont-you-dare-render@xml.com');
 
-  $tree->data_map(href => \%data, with_attr => 'sid', excluding => ['email']);
+  $tree->hash_map(hash => \%data, to_attr => 'sid', excluding => ['email']);
 
   my $generated_html = ptree($tree, "$root.gen");
 

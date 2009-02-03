@@ -37,24 +37,23 @@ sub HTML::Element::siblings {
   $p->content_list;
 }
 
-sub HTML::Element::data_map {
+sub HTML::Element::hash_map {
+    my $container = shift;
 
-    my ($container, @rest) = @_;
+    my %p = validate(@_, {
+			  hash => { type => HASHREF },
+			  to_attr => 1,
+			  excluding => { type => ARRAYREF },
+			  debug => { default => 0 },
+			 });
 
+    my @same_as = $container->look_down('_attr' => $p{to_attr});
 
-  my %p = validate(@rest, {
-    href      => 1,
-    with_attr => 1,
-    excluding => { type => ARRAYREF, default => [] }
-   }
-		  );
-
-  my @same_as = $container->look_down('_attr' => $p{with_attr});
-
-  for my $same_as (@same_as) {
-      next if first { $same_as eq $_ } @{$p{excluding}}  ;
-      $same_as->replace_content( $p{href}->{ $same_as->attr( $p{with_attr} ) } ) ;
-  }
+    for my $same_as (@same_as) {
+	next if first { $same_as->attr($p{to_attr})  eq $_ } @{$p{excluding}} ;
+	my $hash_key =  $same_as->attr($p{to_attr}) ;
+	$same_as->replace_content( $p{hash}->{$hash_key} ) ;
+    }
 
 }
 
@@ -752,6 +751,31 @@ One of these days, I'll around to writing a nice C<EXPORT> section.
 
 =head2 Tree Rewriting Methods
 
+=head3 $elem->hash_map(hash => \%h, to_attr => $attr, excluding => \@excluded)
+
+This method is designed to take a hashref and populate a series of elements. For example:
+
+
+  <table>
+    <tr sclass="tr" class="alt" align="left" valign="top">
+      <td sid="people_id">1</td>
+      <td sid="phone">(877) 255-3239</td>
+      <td sid="password">*********</td>
+    </tr>
+  </table>
+
+In the table above, there are several attributes named C<sid>. If we have a hashref whose keys are the same:
+
+  my %data = (people_id => 888, phone => '444-4444', password => 'dont-you-dare-render');
+
+Then a single API call allows us to populate the HTML while excluding those ones we dont:
+
+  $tree->hash_map(hash => \%data, to_attr => 'sid', excluding => ['password']);
+
+Of course, the other way to prevent rendering some of the hash mapping is to not give that element the attr
+you plan to use for hash mapping.
+
+
 =head3 $elem->replace_content(@new_elem)
 
 Replaces all of C<$elem>'s content with C<@new_elem>. 
@@ -989,7 +1013,11 @@ to give you a taste of how C<mute_attr> is used:
 
 
 
-=head2 Tree-Building Methods: Unrolling an array via a single sample element (<ul> container)
+=head2 Tree-Building Methods
+
+
+
+=head3 Unrolling an array via a single sample element (<ul> container)
 
 This is best described by example. Given this HTML:
 
@@ -1020,7 +1048,7 @@ To produce this:
   </body>
  </html>
 
-=head2 Tree-Building Methods: Unrolling an array via n sample elements (<dl> container)
+=head3 Unrolling an array via n sample elements (<dl> container)
 
 C<iter()> was fine for awhile, but some things
 (e.g. definition lists) need a more general function to make them easy to
@@ -1177,7 +1205,9 @@ So now that we have documented the API, let's see the call we need:
  );
 
 
-=head2 Tree-Building Methods: Select Unrolling
+
+
+=head3 Select Unrolling
 
 The C<unroll_select> method has this API:
 
