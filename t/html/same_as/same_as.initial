@@ -8,7 +8,7 @@
     <tr sclass="tr" class="alt" align="left" valign="top">
       <td sid="people_id">1</td>
       <td sid="phone">(877) 255-3239</td>
-      <td sid="email"><a sid="a_email" href="mailto:leave-me-alone@gmail.com">should-not-be-touched@seamstress.com</a></td>
+      <td sid="email"><a id="a_email" href="mailto:leave-me-alone@gmail.com">should-not-be-touched@seamstress.com</a></td>
     </tr>
   </table>
 </body>

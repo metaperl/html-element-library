@@ -24,9 +24,14 @@ sub tage {
 
   #warn "TREE: $tree" . $tree->as_HTML;
 
-  my %data = (people_id => 888, phone => '444-4444', email => 'dont-you-dare-render@xml.com');
+  my %data = (people_id => 888, phone => '444-4444', email => 'm@xml.com');
 
-  $tree->hash_map(hash => \%data, to_attr => 'sid', excluding => ['email']);
+  $tree->hash_map
+    (hash    => \%data, 
+     to_attr => 'sid', 
+     excluding => [ 'email' ],
+     debug   => 1
+    );
 
   my $generated_html = ptree($tree, "$root.gen");
 

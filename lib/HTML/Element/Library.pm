@@ -43,16 +43,27 @@ sub HTML::Element::hash_map {
     my %p = validate(@_, {
 			  hash => { type => HASHREF },
 			  to_attr => 1,
-			  excluding => { type => ARRAYREF },
+			  excluding => { type => ARRAYREF , default => [] },
 			  debug => { default => 0 },
 			 });
 
-    my @same_as = $container->look_down('_attr' => $p{to_attr});
+    warn 'The container tag is ', $container->tag if $p{debug} ;
+    warn 'hash' . Dumper($p{hash}) if $p{debug} ;
+    warn 'at_under' . Dumper(\@_);
+
+    my @same_as = $container->look_down( $p{to_attr} => qr/.+/ ) ;
+
+    warn 'Found ' . scalar(@same_as) . ' nodes' if $p{debug} ;
+
 
     for my $same_as (@same_as) {
-	next if first { $same_as->attr($p{to_attr})  eq $_ } @{$p{excluding}} ;
-	my $hash_key =  $same_as->attr($p{to_attr}) ;
-	$same_as->replace_content( $p{hash}->{$hash_key} ) ;
+	my $attr_val = $same_as->attr($p{to_attr}) ;
+	if (first { $attr_val eq $_ } @{$p{excluding}}) {
+	    warn "excluding $attr_val" if $p{debug} ;
+	    next;
+	}
+	warn "processing $attr_val" if $p{debug} ;
+	$same_as->replace_content( $p{hash}->{$attr_val} ) ;
     }
 
 }
