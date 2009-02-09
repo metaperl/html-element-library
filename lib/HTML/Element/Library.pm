@@ -657,23 +657,30 @@ sub HTML::Element::unroll_select {
   my $select = {};
 
   my $select_node = $s->look_down(id => $select{select_label});
+  warn "Select Node: " . $select_node if $select{debug};
 
-  my $option = $select_node->look_down('_tag' => 'option');
+  unless ($select{append}) {
+      for my $option ($select_node->look_down('_tag' => 'option')) {
+	  $option->delete;
+      }
+  }
 
-#  warn $option;
 
+  my $option = HTML::Element->new('option');
+  warn "Option Node: " . $option if $select{debug};
 
   $option->detach;
 
   while (my $row = $select{data_iter}->($select{data}))
     {
-#      warn Dumper($row);
-      my $o = $option->clone;
-      $o->attr('value', $select{option_value}->($row));
-      $o->attr('SELECTED', 1) if ($select{option_selected}->($row)) ;
+	warn "Data Row:" . Dumper($row) if $select{debug};
+	my $o = $option->clone;
+	$o->attr('value', $select{option_value}->($row));
+	$o->attr('SELECTED', 1) if (exists $select{option_selected} and $select{option_selected}->($row)) ;
 
-      $o->replace_content($select{option_content}->($row));
-      $select_node->push_content($o);
+	$o->replace_content($select{option_content}->($row));
+	$select_node->push_content($o);
+	warn $o->as_HTML if $select{debug};
     }
 
 
@@ -769,13 +776,13 @@ This method is designed to take a hashref and populate a series of elements. For
 
   <table>
     <tr sclass="tr" class="alt" align="left" valign="top">
-      <td sid="people_id">1</td>
-      <td sid="phone">(877) 255-3239</td>
-      <td sid="password">*********</td>
+      <td smap="people_id">1</td>
+      <td smap="phone">(877) 255-3239</td>
+      <td smap="password">*********</td>
     </tr>
   </table>
 
-In the table above, there are several attributes named C<sid>. If we have a hashref whose keys are the same:
+In the table above, there are several attributes named C<< smap >>. If we have a hashref whose keys are the same:
 
   my %data = (people_id => 888, phone => '444-4444', password => 'dont-you-dare-render');
 
@@ -1229,6 +1236,8 @@ The C<unroll_select> method has this API:
       option_selected => $closure, # boolean to decide if SELECTED
       data         => $data        # the data to be put into the SELECT
       data_iter    => $closure     # the thing that will get a row of data
+      debug  => $boolean,
+      append => $boolean,   # remove the sample <OPTION> data or append?
     );
 
 Here's an example:
@@ -1239,8 +1248,10 @@ Here's an example:
    option_content   => sub { my $row = shift; $row->clan_name },
    option_selected  => sub { my $row = shift; $row->selected },
    data             => \@query_results, 
-   data_iter        => sub { my $data = shift; $data->next }
- )
+   data_iter        => sub { my $data = shift; $data->next },
+   append => 0,
+   debug => 0
+ );
 
 
 
