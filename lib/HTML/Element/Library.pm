@@ -37,6 +37,19 @@ sub HTML::Element::siblings {
   $p->content_list;
 }
 
+sub HTML::Element::defmap {
+    my($tree,$attr,$hashref)=@_;
+
+    while (my ($k, $v) = (each %$hashref)) {
+	my $found = $tree->look_down($attr => $k);
+	if ($found) {
+	    $found->replace_content( $v );
+	}
+    }
+
+}
+
+
 sub HTML::Element::hash_map {
     my $container = shift;
 
@@ -49,7 +62,7 @@ sub HTML::Element::hash_map {
 
     warn 'The container tag is ', $container->tag if $p{debug} ;
     warn 'hash' . Dumper($p{hash}) if $p{debug} ;
-    warn 'at_under' . Dumper(\@_);
+    warn 'at_under' . Dumper(\@_) if $p{debug} ;
 
     my @same_as = $container->look_down( $p{to_attr} => qr/.+/ ) ;
 
@@ -65,6 +78,18 @@ sub HTML::Element::hash_map {
 	warn "processing $attr_val" if $p{debug} ;
 	$same_as->replace_content( $p{hash}->{$attr_val} ) ;
     }
+
+}
+
+sub HTML::Element::hashmap {
+    my ($container, $attr_name, $hashref, $excluding, $debug) = @_;
+
+    $excluding ||= [] ;
+
+    $container->hash_map(hash => $hashref, 
+                          to_attr => $attr_name,
+                          excluding => $excluding,
+                          debug => $debug);
 
 }
 
@@ -656,6 +681,8 @@ sub HTML::Element::unroll_select {
 
   my $select = {};
 
+  warn "Select Hash: " . Dumper(\%select) if $select{debug};
+
   my $select_node = $s->look_down(id => $select{select_label});
   warn "Select Node: " . $select_node if $select{debug};
 
@@ -769,7 +796,7 @@ One of these days, I'll around to writing a nice C<EXPORT> section.
 
 =head2 Tree Rewriting Methods
 
-=head3 $elem->hash_map(hash => \%h, to_attr => $attr, excluding => \@excluded)
+=head3 $elem->hashmap($attr_name, \%hashref, \@excluded, $debug)
 
 This method is designed to take a hashref and populate a series of elements. For example:
 
@@ -788,10 +815,16 @@ In the table above, there are several attributes named C<< smap >>. If we have a
 
 Then a single API call allows us to populate the HTML while excluding those ones we dont:
 
-  $tree->hash_map(hash => \%data, to_attr => 'sid', excluding => ['password']);
+  $tree->hashmap('sid' => \%data, ['password']);
 
-Of course, the other way to prevent rendering some of the hash mapping is to not give that element the attr
+
+Note: the other way to prevent rendering some of the hash mapping is to not give that element the attr
 you plan to use for hash mapping.
+
+Also note: the function C<< hashmap >> has a simple easy-to-type API. Interally, it calls C<< hash_map >>
+(which has a more verbose keyword calling API). Thus, the above call to C<hashmap()> results in this call:
+
+  $tree->hash_map(hash => \%data, to_attr => 'sid', excluding => ['password']);
 
 
 =head3 $elem->replace_content(@new_elem)
@@ -1725,11 +1758,13 @@ down instead:
 
 L<HTML::Seamstress>
 
-=head1 AUTHOR
+=head1 AUTHOR / SOURCE
 
 Terrence Brannon, E<lt>tbone@cpan.orgE<gt>
 
 Many thanks to BARBIE for his RT bug report.
+
+The source is at L<http://github.com/metaperl/html-element-library/tree/master>
 
 =head1 COPYRIGHT AND LICENSE
 

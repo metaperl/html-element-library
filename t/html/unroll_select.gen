@@ -23,9 +23,9 @@
           <td>Clan Name</td>
           <td>
             <select name="name" id="clan_list">
-              <option value="12" id="clan_name" selected="1">janglers</option>
-              <option value="14" id="clan_name">thugknights</option>
-              <option value="13" id="clan_name">cavaliers</option>
+              <option value="12" selected="1">janglers</option>
+              <option value="14">thugknights</option>
+              <option value="13">cavaliers</option>
             </select>
           </td>
         </tr>
