@@ -19,7 +19,7 @@ sub tage {
 
   my %data = (pause => 'arsenal rules');
 
-  $tree->defmap(smap => \%data);
+  $tree->defmap(smap => \%data, 1);
 
   my $generated_html = ptree($tree, "$root.gen");
 

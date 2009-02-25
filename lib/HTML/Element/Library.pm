@@ -38,11 +38,13 @@ sub HTML::Element::siblings {
 }
 
 sub HTML::Element::defmap {
-    my($tree,$attr,$hashref)=@_;
+    my($tree,$attr,$hashref,$debug)=@_;
 
     while (my ($k, $v) = (each %$hashref)) {
+	warn "defmap looks for ($attr => $k)" if $debug;
 	my $found = $tree->look_down($attr => $k);
 	if ($found) {
+	    warn "($attr => $k) was found.. replacing with '$v'" if $debug;
 	    $found->replace_content( $v );
 	}
     }
@@ -200,7 +202,6 @@ sub HTML::Element::iter {
   my @item = map {
     my $new_item = clone $p;
     $new_item->replace_content($_);
-    #    $new_item->attr('id', $id_incr->( $p->attr('id') ));
     $new_item;
   } @data;
 
@@ -796,7 +797,77 @@ One of these days, I'll around to writing a nice C<EXPORT> section.
 
 =head2 Tree Rewriting Methods
 
-=head3 $elem->hashmap($attr_name, \%hashref, \@excluded, $debug)
+=head3 Mapping a hashref to HTML elements
+
+It is very common to get a hashref of data from some external source - flat file, database, XML, etc.
+Therefore, it is important to have a convenient way of mapping this data to HTML.
+
+As it turns out, there are 3 ways to do this in HTML::Element::Library. 
+The most strict and structured way to do this is with 
+C<content_handler>. Two other methods, C<hashmap> and C<datamap> require less manual mapping and may prove
+even more easy to use in certain cases.
+
+As is usual with Perl, a practical example is always best. So let's take some sample HTML:
+
+  <h1>user data</h1>
+  <span id="name">?</span> 
+  <span id="email">?</span> 
+  <span id="gender">?</span> 
+
+Now, let's say our data structure is this:
+
+  $ref = { email => 'jim@beam.com', gender => 'lots' } ;
+
+And let's start with the most strict way to get what you want:
+
+ $tree->content_handler(email => $ref->{email} , gender => $ref->{gender}) ;
+
+
+In this case, you manually state the mapping between id tags and hashref keys and
+then C<content_handler> retrieves the hashref data and pops it in the specified place.
+
+Now let's look at the two (actually 2 and a half) other hash-mapping methods. 
+
+ $tree->hashmap(id => $ref);
+
+Now, what this function does is super-destructive. It finds every element in the tree
+with an attribute named id (since 'id' is a parameter, it could find every element with
+some other attribute also) and replaces the content of  those elements with the hashref 
+value.
+
+So, in the case above, the 
+
+   <span id="name">?</span> 
+
+would come out as
+
+  <span id="name"></span> 
+
+(it would be blank) - because there is nothing in the hash with that value, so it substituted
+
+  $ref->{name} 
+
+which was blank and emptied the contents.
+
+Now, let's assume we want to protect name from being auto-assigned. Here is what you do:
+
+ $tree->hashmap(id => $ref, ['name']);
+
+That last array ref is an exclusion list. 
+
+But wouldnt it be nice if you could do a hashmap, but only assigned things which are defined
+in the hashref? C<< defmap() >> to the rescue:
+
+ $tree->defmap(id => $ref);
+
+does just that, so 
+
+   <span id="name">?</span> 
+
+would be left alone.
+
+
+=head4 $elem->hashmap($attr_name, \%hashref, \@excluded, $debug)
 
 This method is designed to take a hashref and populate a series of elements. For example:
 
@@ -825,6 +896,15 @@ Also note: the function C<< hashmap >> has a simple easy-to-type API. Interally,
 (which has a more verbose keyword calling API). Thus, the above call to C<hashmap()> results in this call:
 
   $tree->hash_map(hash => \%data, to_attr => 'sid', excluding => ['password']);
+
+=head4 $elem->defmap($attr_name, \%hashref, $debug)
+
+C<defmap> was described above.
+
+
+=head4 $elem->content_handler(%hashref)
+
+C<content_handler> is described below.
 
 
 =head3 $elem->replace_content(@new_elem)
@@ -860,7 +940,7 @@ Instead of typing:
 
   $elem->set_child_content(sid => 'fixme', 'new text') 
 
-PLEASE NOTE: you can pass a hash whose keys are C<id>s and whose values are the content you want there and it will perform the replacement on each hash member:
+ALSO NOTE: you can pass a hash whose keys are C<id>s and whose values are the content you want there and it will perform the replacement on each hash member:
 
   my %id_content = (name => "Terrence Brannon",      
                     email => 'tbrannon@in.com',
@@ -1098,6 +1178,17 @@ To produce this:
     </ul>
   </body>
  </html>
+
+Now, you might be wondering why the API call is:
+ 
+  $tree->iter($li => @items)
+
+instead of:
+
+  $li->iter(@items)
+
+and there is no good answer. The latter would be more concise and it is what I 
+should have done.
 
 =head3 Unrolling an array via n sample elements (<dl> container)
 
