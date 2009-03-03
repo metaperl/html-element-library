@@ -97,12 +97,12 @@ sub HTML::Element::hashmap {
 
 
 sub HTML::Element::passover {
-  my ($tree, $child_id) = @_;
+  my ($tree, @to_preserve) = @_;
   
-  warn "ARGS:   my ($tree, $child_id)" if $DEBUG;
+  warn "ARGS:   my ($tree, @to_preserve)" if $DEBUG;
   warn $tree->as_HTML(undef, ' ') if $DEBUG;
 
-  my $exodus = $tree->look_down(id => $child_id);
+  my $exodus = $tree->look_down(id => $to_preserve[0]);
 
   warn "E: $exodus" if $DEBUG;
 
@@ -110,7 +110,7 @@ sub HTML::Element::passover {
 
   for my $s (@s) {
     next unless ref $s;
-    if ($s->attr('id') eq $child_id) {
+    if (first { $s->attr('id') eq $_ } @to_preserve) {
       ;
     } else {
       $s->delete;
@@ -886,7 +886,7 @@ In the table above, there are several attributes named C<< smap >>. If we have a
 
 Then a single API call allows us to populate the HTML while excluding those ones we dont:
 
-  $tree->hashmap('sid' => \%data, ['password']);
+  $tree->hashmap(smap => \%data, ['password']);
 
 
 Note: the other way to prevent rendering some of the hash mapping is to not give that element the attr
@@ -994,13 +994,15 @@ id C<under10> remains. For age less than 18, the node with id C<under18>
 remains.
 Otherwise our "else" condition fires and the child with id C<welcome> remains.
 
-=head3 $tree->passover($id_of_element)
+=head3 $tree->passover(@id_of_element)
 
-In some cases, you know exactly which element should survive. In this case,
-you can simply call C<passover> to remove it's siblings. For the HTML
+In some cases, you know exactly which element(s) should survive. In this case,
+you can simply call C<passover> to remove it's (their) siblings. For the HTML
 above, you could delete C<under10> and C<welcome> by simply calling:
 
   $tree->passover('under18');
+
+Because passover takes an array, you can specify several children to preserve.
 
 =head3 $tree->highlander2($tree, $conditionals, @conditionals_args)
 
