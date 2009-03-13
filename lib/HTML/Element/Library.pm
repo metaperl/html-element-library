@@ -28,7 +28,19 @@ our @EXPORT      = qw();
 our $VERSION = '3.53';
 
 
+
 # Preloaded methods go here.
+
+# https://rt.cpan.org/Ticket/Display.html?id=44105
+sub HTML::Element::fillinform {
+
+    my ($tree, $hashref)=@_;
+
+    use HTML::FillInForm;
+    my $html = $tree->as_HTML;
+    my $new_html = HTML::FillInForm->fill(\$html, $hashref);
+
+}
 
 sub HTML::Element::siblings {
   my $element = shift;
@@ -796,6 +808,27 @@ your text wrapped in a C<~literal> element.
 One of these days, I'll around to writing a nice C<EXPORT> section.
 
 =head2 Tree Rewriting Methods
+
+=head3 Simplifying calls to HTML::FillInForm
+
+Since HTML::FillInForm gets and returns strings, using HTML::Element instances 
+becomes tedious:
+
+   1. Seamstress has an HTML tree that it wants the form filled in on
+   2. Seamstress converts this tree to a string
+   3. FillInForm parses the string into an HTML tree and then fills in the form
+   4. FillInForm converts the HTML tree to a string
+   5. Seamstress re-parses the HTML for additional processing 
+
+I've filed a bug about this:
+L<https://rt.cpan.org/Ticket/Display.html?id=44105>
+
+This function, fillinform, 
+allows you to pass a tree to fillinform (along with your data structure) and
+get back a tree:
+
+   my $new_tree = $html_tree->fillinform($data_structure);
+  
 
 =head3 Mapping a hashref to HTML elements
 
