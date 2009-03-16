@@ -36,6 +36,8 @@ sub HTML::Element::fillinform {
 
     my ($tree, $hashref)=@_;
 
+    (ref $hashref) eq 'HASH' or die 'hashref not supplied as argument' ;
+
     use HTML::FillInForm;
     my $html = $tree->as_HTML;
     my $new_html = HTML::FillInForm->fill(\$html, $hashref);
