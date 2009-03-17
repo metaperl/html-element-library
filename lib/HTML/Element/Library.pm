@@ -34,13 +34,19 @@ our $VERSION = '3.53';
 # https://rt.cpan.org/Ticket/Display.html?id=44105
 sub HTML::Element::fillinform {
 
-    my ($tree, $hashref)=@_;
+    my ($tree, $hashref, $return_tree)=@_;
 
     (ref $hashref) eq 'HASH' or die 'hashref not supplied as argument' ;
 
     use HTML::FillInForm;
     my $html = $tree->as_HTML;
     my $new_html = HTML::FillInForm->fill(\$html, $hashref);
+
+    if ($return_tree) {
+	HTML::TreeBuilder->new_from_content($new_html);
+    } else {
+	$new_html;
+    }
 
 }
 
