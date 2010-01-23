@@ -1,18 +1,31 @@
-# http://module-build.sourceforge.net/META-spec.html
-#XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
-name:         HTML-Element-Library
-version:      3.51
-version_from: lib/HTML/Element/Library.pm
-installdirs:  site
+--- #YAML:1.0
+name:               HTML-Element-Library
+version:            4.2.a
+abstract:           ~
+author:
+    - Terrence Brannon <tbone@cpan.org>
+license:            unknown
+distribution_type:  module
+configure_requires:
+    ExtUtils::MakeMaker:  0
+build_requires:
+    ExtUtils::MakeMaker:  0
 requires:
-    Array::Group:                  1
-    File::Slurp:                   9999.06
-    HTML::PrettyPrinter:           0.03
-    HTML::Tree:                    3.19
-    List::MoreUtils:               0.09
-    List::Rotation::Cycle:         1.003
-    Params::Validate:              0.8
-    Scalar::Listify:               0.02
-
-distribution_type: module
-generated_by: ExtUtils::MakeMaker version 6.17
+    Array::Group:         1
+    File::Slurp:          9999.06
+    HTML::FillInForm:     0
+    HTML::PrettyPrinter:  0.03
+    HTML::Tree:           3.19
+    List::MoreUtils:      0.09
+    List::Rotation::Cycle:  1.003
+    Moose:                0
+    Params::Validate:     0.8
+    Scalar::Listify:      0.02
+no_index:
+    directory:
+        - t
+        - inc
+generated_by:       ExtUtils::MakeMaker version 6.54
+meta-spec:
+    url:      http://module-build.sourceforge.net/META-spec-v1.4.html
+    version:  1.4
