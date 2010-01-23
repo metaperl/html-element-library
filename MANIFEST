@@ -1,6 +1,7 @@
 Changes
 CHANGES
 lib/HTML/Element/Library.pm
+lib/HTML/Element/Library.pod
 lib/HTML/Element/Library/Changes.pod
 Makefile.PL
 MANIFEST			This list of files
@@ -10,16 +11,27 @@ t/00system.t
 t/Arsenal.pl
 t/Arsenal.pm
 t/content_handler.t
+t/crunch.t
 t/data/3dig.dat
 t/data/4dig.dat
 t/data/table2.pm
+t/defmap.t
 t/dual_iter.t
+t/fillinform.t
+t/hashmap.t
 t/highlander.t
 t/highlander2.t
 t/HTML-Element-Library.t
+t/html/crunch/crunch.initial
+t/html/defmap/defmap.exp
+t/html/defmap/defmap.gen
+t/html/defmap/defmap.initial
 t/html/dual_iter.exp
 t/html/dual_iter.gen
 t/html/dual_iter.html
+t/html/fillinform/fillinform.exp
+t/html/fillinform/fillinform.gen
+t/html/fillinform/fillinform.initial
 t/html/highlander-15.exp
 t/html/highlander-15.gen
 t/html/highlander-5.exp
@@ -33,6 +45,8 @@ t/html/highlander2-27.exp
 t/html/highlander2-27.gen
 t/html/highlander2-5.exp
 t/html/highlander2-5.gen
+t/html/highlander2-passover.exp
+t/html/highlander2-passover.gen
 t/html/highlander2.html
 t/html/iter.exp
 t/html/iter.gen
@@ -40,6 +54,10 @@ t/html/iter.html
 t/html/iter2.exp
 t/html/iter2.gen
 t/html/iter2.html
+t/html/same_as.html
+t/html/same_as/same_as.exp
+t/html/same_as/same_as.gen
+t/html/same_as/same_as.initial
 t/html/table-alt.exp
 t/html/table-alt.gen
 t/html/table-alt.html
@@ -81,6 +99,7 @@ t/m/SimpleClass.pm
 t/m/TestUtils.pm
 t/not-used/Arsenal.pl
 t/not-used/Arsenal.pm
+t/passover.t
 t/position.t
 t/q
 t/replace_content.t

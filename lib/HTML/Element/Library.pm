@@ -72,6 +72,24 @@ sub HTML::Element::defmap {
 
 }
 
+sub HTML::Element::crunch {
+    my $container = shift;
+
+    my %p = validate(@_, {
+			  look_down => { type => ARRAYREF },
+			  leave => { default => 1 },
+			 });
+
+    my @look_down = @{$p{look_down}} ;
+    my @elem = $container->look_down( @look_down ) ;
+    
+    my $left;
+    
+    for my $elem (@elem) {
+	$elem->detach if $left++ >= $p{leave} ;
+    }
+
+}
 
 sub HTML::Element::hash_map {
     my $container = shift;

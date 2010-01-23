@@ -58,6 +58,31 @@ One of these days, I'll around to writing a nice C<EXPORT> section.
 
 =head2 Tree Rewriting Methods
 
+=head3 "de-prepping" HTML
+
+Oftentimes, the HTML to be worked with will have multiple sample rows:
+
+  <OL>
+   <LI>bread
+   <LI>butter
+   <LI>beer
+   <LI>bacon
+  </OL>
+
+But, before you begin to rewrite the HTML with your model data, you typically only want 1 or 2 sample rows.
+
+Thus, you want to "crunch" the multiple sample rows to a specified amount. Hence the C<crunch> method:
+
+  $tree->crunch(look_down => [ '_tag' => 'li' ], leave => 2) ;
+
+The C<leave> argument defaults to 1 if not given. The call above would "crunch" the above 4 sample rows to:
+
+  <OL>
+   <LI>bread
+   <LI>butter
+  </OL>
+
+
 =head3 Simplifying calls to HTML::FillInForm
 
 Since HTML::FillInForm gets and returns strings, using HTML::Element instances 
@@ -78,6 +103,8 @@ get back a tree:
 
    my $new_tree = $html_tree->fillinform($data_structure);
   
+
+
 
 =head3 Mapping a hashref to HTML elements
 
