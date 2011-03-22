@@ -27,7 +27,6 @@ $t1 = HTML::Element->new_from_lol
 
 
 $t1->look_down('_tag' => 'body')->replace_content('all gone!');
-is( $t1->as_HTML, '<html><head><title>I like stuff!</title></head><body lang="en-JP">all gone!</body></html>
-', "replaced all of body");
+is( $t1->as_HTML, '<html><head><title>I like stuff!</title></head><body lang="en-JP">all gone!</body></html>', "replaced all of body");
 
 

@@ -28,7 +28,6 @@ $t1 = HTML::Element->new_from_lol
 
 #$t1->look_down('_tag' => 'body')->replace_content('all gone!');
 $t1->set_child_content(id => 'corpus', 'all gone!');
-is( $t1->as_HTML, '<html><head><title>I like stuff!</title></head><body id="corpus" lang="en-JP">all gone!</body></html>
-', "replaced all of body");
+is( $t1->as_HTML, '<html><head><title>I like stuff!</title></head><body id="corpus" lang="en-JP">all gone!</body></html>', "replaced all of body");
 
 

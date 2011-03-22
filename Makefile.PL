@@ -15,7 +15,7 @@ WriteMakefile
 
     HTML::FillInForm => 0,
     HTML::PrettyPrinter   => 0.03,
-    HTML::Tree            => 3.19,
+    HTML::Tree            => 4.1,
 
     List::Rotation::Cycle => 1.003,
     List::MoreUtils       => 0.09,

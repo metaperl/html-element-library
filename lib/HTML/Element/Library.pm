@@ -25,7 +25,7 @@ our @EXPORT      = qw();
 
 
 
-our $VERSION = '4.2.c';
+our $VERSION = '4.3';
 
 
 

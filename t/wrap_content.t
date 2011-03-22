@@ -33,7 +33,6 @@ my $bold = HTML::Element->new('b', id => 'wrapper');
 
 my $W = $t1->look_down('id' => 'wrapme');
 $W->wrap_content($bold);
-is( $W->as_HTML, '<span id="wrapme"><b id="wrapper">um, p &lt; 4!</b></span>
-', "wrapped text");
+is( $W->as_HTML, '<span id="wrapme"><b id="wrapper">um, p &lt; 4!</b></span>', "wrapped text");
 
 
