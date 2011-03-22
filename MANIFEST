@@ -23,6 +23,7 @@ t/highlander.t
 t/highlander2.t
 t/HTML-Element-Library.t
 t/html/crunch/crunch.initial
+t/html/crunch/crunch.exp
 t/html/defmap/defmap.exp
 t/html/defmap/defmap.gen
 t/html/defmap/defmap.initial
