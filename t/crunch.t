@@ -3,7 +3,7 @@ use strict;use warnings;
 use lib qw(t/ t/m/);
 
 use File::Slurp;
-use Test::More qw(no_plan);
+use Test::More;
 
 use TestUtils;
 use HTML::TreeBuilder;
@@ -26,3 +26,4 @@ sub tage {
 
 tage();
 
+done_testing;

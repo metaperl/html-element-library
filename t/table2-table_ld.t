@@ -9,7 +9,7 @@ use lib qw(t/ t/m/);
 
 
 use File::Slurp;
-use Test::More qw(no_plan);
+use Test::More;
 
 use TestUtils;
 use HTML::TreeBuilder;
@@ -69,3 +69,5 @@ $generated_html = ptree($table, "$root.gen");
 
 is ($generated_html, File::Slurp::read_file("$root.exp"), $root);
 
+
+done_testing;

@@ -98,6 +98,26 @@ sub HTML::Element::prune {
   $self;
 }
 
+sub HTML::Element::newnode {
+  my ($lol, $node_label, $new_node)=@_;
+
+  use Data::Rmap qw(rmap_array);
+
+  my ($mapresult) = rmap_array {
+ 
+
+  if ($_->[0] eq $node_label) {
+    $_ = $new_node;
+    Data::Rmap::cut($_);
+  } else {
+    $_;
+  }
+
+  } $lol;
+
+  $mapresult;
+
+}
 
 sub HTML::Element::crunch {
     my $container = shift;

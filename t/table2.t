@@ -4,7 +4,8 @@ use lib qw(t/ t/m/);
 
 
 use File::Slurp;
-use Test::More qw(no_plan);
+use Test::More;
+use Test::XML;
 
 use TestUtils;
 
@@ -48,5 +49,7 @@ for my $dataset (keys %$d) {
 
 my $generated_html = ptree($tree, "$root.gen");
 
-is ($generated_html, File::Slurp::read_file("$root.exp"), 
-    "HTML for non-alternating table");
+is($generated_html, File::Slurp::read_file("$root.exp"), 'genhtml');
+
+
+done_testing;
