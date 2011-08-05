@@ -4,6 +4,7 @@ use lib qw(t/ t/m/);
 
 use File::Slurp;
 use Test::More qw(no_plan);
+use Test::XML;
 
 use TestUtils;
 use HTML::TreeBuilder;
@@ -21,9 +22,11 @@ sub tage {
 
   $tree->defmap(smap => \%data, 1);
 
-  my $generated_html = ptree($tree, "$root.gen");
+  my $g = ptree($tree, "$root.gen");
+  my $e = File::Slurp::read_file("$root.exp");
+  warn "generated:$g:\nexpected:$e:";
 
-  is ($generated_html, File::Slurp::read_file("$root.exp"), "HTML for same_as");
+  is_xml ($g, $e, "HTML for defmap");
 }
 
 

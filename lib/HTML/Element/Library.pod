@@ -1106,7 +1106,7 @@ you manipulate a loltree programmatically.
 
 These could not be methods because if you bless a loltree, then HTML::Tree will barf.
 
-=head3 HTML::Element::replace_node($lol, $node_label, $new_node)
+=head3 HTML::Element::newchild($lol, $parent_label, @newchild)
 
 Given this initial loltree:
 
@@ -1116,7 +1116,7 @@ This code:
 
     sub shopping_items {
       my @shopping_items = map { [ item => _ ] } qw(bread butter beans) ;
-      \@shopping_items;
+      @shopping_items;
     }
 
     my $new_lol = HTML::Element::newnode($initial_lol, item => shopping_items());
@@ -1128,7 +1128,7 @@ This code:
           'note',
           [
             'shopping',
-            [
+      
               [
                 'item',
                 'bread'
@@ -1141,7 +1141,7 @@ This code:
                 'item',
                 'beans'
               ]
-            ]
+
           ]
         ];
 
@@ -1160,13 +1160,13 @@ A perl package for creating and manipulating HTML trees.
 An L<HTML::Tree> - based module which allows for manipulation of HTML
 trees using cartesian coordinations. 
 
-=head2 * L<HTML::Seamstress>
+=head2 L<HTML::Seamstress>
 
 An L<HTML::Tree> - based module inspired by 
 XMLC (L<http://xmlc.enhydra.org>), allowing for dynamic
 HTML generation via tree rewriting.
 
-=head2 Push-style tmeplating systems
+=head2 Push-style templating systems
 
 A comprehensive cross-language 
 L<list of push-style templating systems|http://perlmonks.org/?node_id=674225>.
@@ -1218,15 +1218,18 @@ down instead:
 
 =cut
 
-=head1 SEE ALSO
 
-L<HTML::Seamstress>
-
-=head1 AUTHOR / SOURCE
+=head1 AUTHOR and ACKS
 
 Terrence Brannon, E<lt>tbone@cpan.orgE<gt>
 
 Many thanks to BARBIE for his RT bug report.
+
+Many thanks to perlmonk kcott for his work on array rewriting:
+L<http://www.perlmonks.org/?node_id=912416>.
+It was crucial in the development of newchild.
+
+=head2 Source Repo
 
 The source is at L<http://github.com/metaperl/html-element-library/tree/master>
 

@@ -25,7 +25,7 @@ our @EXPORT      = qw();
 
 
 
-our $VERSION = '4.3';
+
 
 
 
@@ -98,16 +98,16 @@ sub HTML::Element::prune {
   $self;
 }
 
-sub HTML::Element::newnode {
-  my ($lol, $node_label, $new_node)=@_;
+sub HTML::Element::newchild {
+  my ($lol, $parent_label, @newchild)=@_;
 
   use Data::Rmap qw(rmap_array);
 
   my ($mapresult) = rmap_array {
  
 
-  if ($_->[0] eq $node_label) {
-    $_ = $new_node;
+  if ($_->[0] eq $parent_label) {
+    $_ = [ $parent_label => @newchild ];
     Data::Rmap::cut($_);
   } else {
     $_;
