@@ -1223,6 +1223,10 @@ down instead:
 
 Terrence Brannon, E<lt>tbone@cpan.orgE<gt>
 
+I appreciate the feedback from M. David Moussa Leo Keita regarding some issues with the
+test suite, namely (1) CRLF leading to test breakage in F<t/crunch.t> and (2) using the 
+wrong module in F<t/prune.t> thus not having the right functionality available.
+
 Many thanks to BARBIE for his RT bug report.
 
 Many thanks to perlmonk kcott for his work on array rewriting:
