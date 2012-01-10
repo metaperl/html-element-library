@@ -6,7 +6,7 @@ use File::Slurp;
 
 require Exporter;
 @ISA=qw(Exporter);
-@EXPORT = qw(ptree html_dir);
+@EXPORT = qw(ptree html_dir strip_ws);
 
 sub html_dir {
   't/html/'
@@ -24,6 +24,12 @@ sub ptree {
   join '', @$lines;
 }
 
+sub strip_ws {
+  my($str)=@_;
+
+  $str =~ s/\s+//g;
+  $str;
+}
 
 
 1;
