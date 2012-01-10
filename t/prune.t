@@ -9,7 +9,7 @@ use Test::XML;
 
 BEGIN {
     use_ok('HTML::TreeBuilder');
-    use_ok('HTML::Element::Prune');
+    use_ok('HTML::Element::Library');
 }
 
 

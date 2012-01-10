@@ -8,6 +8,7 @@ use Test::More;
 use TestUtils;
 use HTML::TreeBuilder;
 use HTML::Element::Library;
+use Test::XML;
 
 sub tage {
 
@@ -20,7 +21,7 @@ sub tage {
 
   my $generated_html = ptree($tree, "$root.gen");
 
-  is ($generated_html, File::Slurp::read_file("$root.exp"), "HTML for crunch");
+  is_xml ($generated_html, File::Slurp::read_file("$root.exp"), "HTML for crunch");
 }
 
 
